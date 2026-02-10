@@ -1,6 +1,6 @@
 # Tactic2Vec: Deep Metric Learning for Similar Soccer Plays Retrieval
 
-![Tactic2Vec Cover](tactic2vec_cover.png)
+![Tactic2Vec Cover](images/tactic2vec_cover.png)
 
 **Tactic2Vec** is a Deep Metric Learning system designed to measure the semantic similarity between 22-player football tracking sequences. It solves the problem of **play retrieval** by learning a dense vector representation where geometrically and tactically similar scenes (e.g., "counter-attack down the right flank" or "high press recovery") are clustered together in the embedding space.
 
@@ -16,14 +16,14 @@ The system is trained and evaluated on **FIFA World Cup 2022** tracking data pro
 
 The dataset is available at: https://www.blog.fc.pff.com/blog/pff-fc-release-2022-world-cup-data
 
-## 🧠 Problem Formulation
+## 🏗️ Framework Overview
 
-The system implements a full End-to-End Deep Learning pipeline, from raw tracking data to vector search.
+![Tactic2Vec Architecture](images/tactic2vec_architecture.png)
 
-### 1. Data Engineering & Alignment
+### 1. Preprocessing
 Raw tracking data is non-stationary and rotationally invariant. To learn meaningful patterns, we implement a rigorous **Alignment Pipeline**:
 *   **Window Extraction**: Scenes are extracted as fixed-length temporal windows (**150 frames**, approx. 5 seconds) centered on key events (Shots, Passes).
-*   **Angle-Based Canonicalization**: To handle the rotational invariance of the pitch, scenes are rotated such that the **average attacking vector** aligns with the positive x-axis. This ensures that a "run down the right wing" is mathematically identical regardless of the team's absolute orientation on the pitch.
+*   **Angle-Based Canonicalization**: Each team player get assigned a number based on his angle relative to the team's center of mass
 
 ### 2. Model: Siamese Gated TCN
 We utilize a **Siamese Network** architecture with a shared outcome-agnostic encoder.
@@ -33,6 +33,8 @@ We utilize a **Siamese Network** architecture with a shared outcome-agnostic enc
     *   **Residual Connections** for gradient stability.
 *   **Input**: Flattened trajectory tensors of shape $(B, 44, L)$ (representing 22 players $\times$ 2 coords).
 *   **Embedding Head**: Global Average Pooling followed by a Linear projection and LayerNorm to produce $L_2$-normalized embeddings of dimension $d=64$.
+
+![Model Architecture](images/model_arch.png)
 
 ### 3. Inference & Retrieval
 *   **Vectorization**: The trained encoder maps all indexed scenes to $\mathbb{R}^{64}$.
@@ -79,7 +81,7 @@ project the high-dimensional embedding space into 3D.
 python visualize_embeddings.py --plotly # Output: embedding_space_interactive.html
 ```
 
-## 📖 CLI Reference
+## 📖 CLI Usage
 
 ### `pipeline.py` - Data Preparation & Indexing
 
@@ -171,22 +173,3 @@ python search_tool.py --query_idx 50 --top_k 10 --no_vis
 **Outputs:**
 - `search_results.png` - Visualization showing query scene and top-K matches with trajectory overlays
 - Console output with similarity scores and event metadata
-
----
-
-## 📂 Repository Structure
-
-```
-├── src/
-│   ├── model.py             # PyTorch Gated TCN definition
-│   ├── pipeline.py          # ETL & Indexing orchestrator
-│   ├── preprocessing/
-│   │   ├── alignment_v2.py     # Angle-Based Alignment Logic
-│   │   └── extract_scenes.py   # Raw Tracking Data Loader
-│   └── retrieval/
-│   │   ├── search.py        # K-NN Search Engine
-│   │   └── inference.py     # Inference loop
-├── search_tool.py           # CLI for Scene Retrieval
-├── visualize_embeddings.py  # CLI for Manifold Visualization
-└── siamese_tcn_attack.pth   # Pre-trained Model Weights
-```
