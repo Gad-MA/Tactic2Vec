@@ -42,7 +42,7 @@ We utilize a **Siamese Network** architecture with a shared outcome-agnostic enc
 *   **Dimensionality Reduction**: For PCA and t-SNE visualizations, we project the 64-dim manifold down to 2D/3D to inspect the embedding space.
 
 **The Resulting 3D t-SNE Projected Embedding Space:**
-![Embedding Space](images/embeddings_space.gif)
+![Embedding Space](images/embedding_space.gif)
 
 ## 💻 Tech Stack
 
