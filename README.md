@@ -2,11 +2,11 @@
 
 ![Tactic2Vec Cover](images/tactic2vec_cover.png)
 
-**Tactic2Vec** is a Deep Metric Learning system designed to measure the semantic similarity between 22-player football tracking sequences. It solves the problem of **play retrieval** by learning a dense vector representation where geometrically and tactically similar scenes (e.g., "counter-attack down the right flank" or "high press recovery") are close to each other in the embedding space.
+**Tactic2Vec** is a Deep Metric Learning system designed to measure the semantic similarity between 22-player football tracking sequences (scenes). It solves the problem of **play retrieval** by learning a dense vector representation where geometrically and tactically similar scenes (e.g., "counter-attack down the right flank" or "high press recovery") are close to each other in the embedding space.
 
 ## 🧠 Problem Formulation
 
-Given a set of tracking sequences $S = \{T_1, T_2, ..., T_N\}$, where each sequence $T_i \in \mathbb{R}^{22 \times 2 \times L}$ represents the $(x, y)$ coordinates of 22 players over $L$ frames, our objective is to learn an encoder function $f_\theta: S \rightarrow \mathbb{R}^d$ such that:
+Given a set of tracking sequences (scenes) $S = \{T_1, T_2, ..., T_N\}$, where each sequence (scene) $T_i \in \mathbb{R}^{22 \times 2 \times L}$ represents the $(x, y)$ coordinates of 22 players over $L$ frames, our objective is to learn an encoder function $f_\theta: S \rightarrow \mathbb{R}^d$ such that:
 
 $$ D(f_\theta(T_i), f_\theta(T_j)) < D(f_\theta(T_i), f_\theta(T_k)) $$
 
@@ -59,7 +59,7 @@ pip install -r requirements.txt
 ```
 
 ### 1. Prep Stage
-Extracts raw sequences, performs Angle-Based Alignment, and pickles them.
+Extracts raw sequences (scenes), performs Angle-Based Alignment, and pickles them.
 ```bash
 python src/pipeline.py prep --n_pairs 5000
 ```
