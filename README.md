@@ -2,7 +2,7 @@
 
 ![Tactic2Vec Cover](images/tactic2vec_cover.png)
 
-**Tactic2Vec** is a Deep Metric Learning system designed to measure the semantic similarity between 22-player football tracking sequences. It solves the problem of **play retrieval** by learning a dense vector representation where geometrically and tactically similar scenes (e.g., "counter-attack down the right flank" or "high press recovery") are clustered together in the embedding space.
+**Tactic2Vec** is a Deep Metric Learning system designed to measure the semantic similarity between 22-player football tracking sequences. It solves the problem of **play retrieval** by learning a dense vector representation where geometrically and tactically similar scenes (e.g., "counter-attack down the right flank" or "high press recovery") are close to each other in the embedding space.
 
 ## 🧠 Problem Formulation
 
@@ -39,7 +39,10 @@ We utilize a **Siamese Network** architecture with a shared outcome-agnostic enc
 ### 3. Inference & Retrieval
 *   **Vectorization**: The trained encoder maps all indexed scenes to $\mathbb{R}^{64}$.
 *   **Index**: We use **FAISS** (Facebook AI Similarity Search) with a Flat L2 index for exact nearest neighbor search.
-*   **Dimensionality Reduction**: For PCA and t-SNE visualizations, we project the 64-dim manifold down to 2D/3D to inspect cluster separation.
+*   **Dimensionality Reduction**: For PCA and t-SNE visualizations, we project the 64-dim manifold down to 2D/3D to inspect the embedding space.
+
+**The Resulting 3D t-SNE Projected Embedding Space:**
+![Embedding Space](images/embeddings_space.gif)
 
 ## 💻 Tech Stack
 
